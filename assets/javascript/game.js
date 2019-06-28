@@ -1,37 +1,41 @@
 // Utility Variables
 var $targetWord = document.getElementById("targetWord")
 var $fails = document.getElementById("fails")
-
-
+var $wins = document.getElementById("wins")
+var $losses = document.getElementById("losses")
+var $attemptsLeft = document.getElementById("attemptsLeft")
 
 // Game Object Base Code
 var game = {
-    bank: [ "test"],
+    bank: ["tester"],
     chosenWord: "NaN",
     hangReference: [],
     workingWord: "NaN",
 
-    attemptCount: 0,
+    wins : 0,
+    losses: 0,
+    attempsLeft: 10,
     failedAttempts: [], 
     
     getWord: function () { 
         this.chosenWord = this.bank[Math.floor(Math.random() * this.bank.length)];
         let pos = this.bank.indexOf(this.chosenWord)
-        // this.bank.splice(pos, 1)
-        console.log(this.chosenWord)
+        this.bank.splice(pos, 1)
+        // console.log(this.chosenWord)
     },
     
     convert: function () {
         this.hangReference = this.chosenWord.split("")
         for (i = 0; i < this.hangReference.length; i++) {
             this.hangReference[i] = "_"
-            console.log(this.hangReference)    
+            // console.log(this.hangReference)    
         }
         this.workingWord = this.hangReference.join(" ")
     },
 
     setWord: function (str) {
         $targetWord.innerHTML = str;
+
     },
     
     // keyCheck: function (userKey) {
@@ -73,12 +77,23 @@ var game = {
                 progressWord[tempPos] = userKey
                 this.workingWord = progressWord.join(" ")
                 this.setWord(this.workingWord)
+
+
+                    
                 }
             }  
         } else {
-            console.log("it's not there")
+            // console.log("it's not there")
             this.failedAttempts.push(userKey)
             $fails.textContent = this.failedAttempts
+            this.attemptLeft--
+            $attemptsLeft.textContent = this.attemptsLeft
+            
+
+            if (this.attemptCount === 0) {
+                this.failure()
+            
+            }
         }
 
     },
@@ -87,13 +102,43 @@ var game = {
         document.onkeyup = function(event) {
             var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"," ",]
             var userKey = event.key.toLowerCase()
+            $attemptsLeft.textContent = this.attempsLeft
             if (alphabet.indexOf(userKey) === -1){
                 alert("I'm sorry, your input was not recognized. Please only use alphebetical keys.")
             } else {
             console.log(userKey)
             game.keyCheck(userKey)
+            game.successCheck()
+
             }
         }
+    },
+
+    successCheck: function () {
+        if (this.workingWord.indexOf("_") === -1) {
+            this.reset()
+            alert("You Won!")
+            this.wins++
+            $wins.textContent = this.wins
+        }    
+        
+    },
+
+    failure: function () {
+        alert("You Failed")
+        this.losses++
+        this.reset()
+    },
+
+    reset: function () {
+        this.attemptLeft = 10
+    
+        this.failedAttempts = []
+        this.getWord()
+        this.convert()
+        this.setWord(game.workingWord)
+        this.start()
+
     },
 
     
@@ -101,10 +146,9 @@ var game = {
 
 
 
-game.getWord()
-game.convert()
-game.setWord(game.workingWord)
-game.start()
+
+
+game.reset()
 
 
 
