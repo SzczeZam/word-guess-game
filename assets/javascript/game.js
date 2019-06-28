@@ -5,16 +5,21 @@ var $wins = document.getElementById("wins")
 var $losses = document.getElementById("losses")
 var $attemptsLeft = document.getElementById("attemptsLeft")
 
+
 // Game Object Base Code
 var game = {
-    bank: ["tester"],
+    bank: ["coffee","latte","espresso","macchiato","mocha",
+    "cappiccino","drip","americano","coldbrew","pourover",
+    "steam","dairy","siphon","honduras","ethiopia","colombia",
+    "sumatra","soy","macadamia",],
+
     chosenWord: "NaN",
     hangReference: [],
     workingWord: "NaN",
 
     wins : 0,
     losses: 0,
-    attempsLeft: 10,
+    attemptsLeft: 10,
     failedAttempts: [], 
     
     getWord: function () { 
@@ -39,6 +44,8 @@ var game = {
     },
     
     // keyCheck: function (userKey) {
+
+
     //     let progressWord =  this.hangReference
     //     this.hangAnswer = this.chosenWord.split(" ")
         
@@ -69,7 +76,7 @@ var game = {
         console.log("it's there")
             for (var i = 0; i < this.workingWord.length; i++) {
                 let tempPos = this.chosenWord.indexOf(userKey, [i])
-                console.log(tempPos)
+                // console.log(tempPos)
 
                 if (tempPos === -1) {
                     
@@ -83,16 +90,17 @@ var game = {
                 }
             }  
         } else {
-            // console.log("it's not there")
+            console.log("it's not there")
+            // console.log(game.attempsLeft)
+
             this.failedAttempts.push(userKey)
             $fails.textContent = this.failedAttempts
-            this.attemptLeft--
-            $attemptsLeft.textContent = this.attemptsLeft
+            game.attemptsLeft-=1;
+            $attemptsLeft.textContent = game.attemptsLeft
             
-
-            if (this.attemptCount === 0) {
+            console.log(game.attemptsLeft)
+            if (game.attemptsLeft <= 0) {
                 this.failure()
-            
             }
         }
 
