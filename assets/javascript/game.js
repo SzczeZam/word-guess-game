@@ -1,13 +1,12 @@
 // Utility Variables
 var $targetWord = document.getElementById("targetWord")
-
-
+var $fails = document.getElementById("fails")
 
 
 
 // Game Object Base Code
 var game = {
-    bank: [ "tttt"],
+    bank: [ "test"],
     chosenWord: "NaN",
     hangReference: [],
     workingWord: "NaN",
@@ -19,6 +18,7 @@ var game = {
         this.chosenWord = this.bank[Math.floor(Math.random() * this.bank.length)];
         let pos = this.bank.indexOf(this.chosenWord)
         // this.bank.splice(pos, 1)
+        console.log(this.chosenWord)
     },
     
     convert: function () {
@@ -59,25 +59,34 @@ var game = {
     // },
 
     keyCheck: function (userKey) {
-        for (var i = 0; i < this.hangReference; i++) {
-            let tempPos = this.chosenWord[i].indexOf(userKey)
+        let progressWord = this.hangReference
+        console.log("keyCheck started")
+       if (this.chosenWord.indexOf(userKey) >= 0){
+        console.log("it's there")
+            for (var i = 0; i < this.workingWord.length; i++) {
+                let tempPos = this.chosenWord.indexOf(userKey, [i])
+                console.log(tempPos)
 
-            if (tempPos >= 0) {
-                this.workingWord[i] = userKey
+                if (tempPos === -1) {
+                    
+                } else{
+                progressWord[tempPos] = userKey
+                this.workingWord = progressWord.join(" ")
                 this.setWord(this.workingWord)
-
-            } else {
-
-            }
+                }
+            }  
+        } else {
+            console.log("it's not there")
+            this.failedAttempts.push(userKey)
+            $fails.textContent = this.failedAttempts
         }
-
 
     },
 
     start: function () {
         document.onkeyup = function(event) {
             var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"," ",]
-            var userKey = event.key
+            var userKey = event.key.toLowerCase()
             if (alphabet.indexOf(userKey) === -1){
                 alert("I'm sorry, your input was not recognized. Please only use alphebetical keys.")
             } else {
@@ -94,7 +103,7 @@ var game = {
 
 game.getWord()
 game.convert()
-game.setWord(game.hangReference)
+game.setWord(game.workingWord)
 game.start()
 
 
