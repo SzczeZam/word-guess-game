@@ -135,11 +135,12 @@ var game = {
     failure: function () {
         alert("You Failed")
         this.losses++
+        $losses.textContent = this.losses
         this.reset()
     },
 
     reset: function () {
-        this.attemptLeft = 10
+        this.attemptsLeft = 10
     
         this.failedAttempts = []
         this.getWord()

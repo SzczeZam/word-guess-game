@@ -1,0 +1,30 @@
+.container {
+    width: 50%;
+    margin: 0 auto;
+    background: grey;
+    opacity:0.5;
+}
+
+
+body {
+    background-image: url("../images/Coffee_beans2.jpg");
+    background-size: cover;
+}
+
+
+h1 {
+    font-size: 800%;
+    text-align: center;
+    opacity: 100%;
+}
+
+
+.text {
+    opacity: 100%;
+    color: white;
+}
+
+
+.center {
+    text-align: center;
+}
